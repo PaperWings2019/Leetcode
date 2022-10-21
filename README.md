@@ -1,2 +1,3 @@
 # Leetcode
- A collection of solutions to leetcode questions
+A collection of solutions to leetcode questions
+Author: Bill
