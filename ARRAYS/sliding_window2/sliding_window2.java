@@ -21,6 +21,7 @@ class Solution {
      * SPACE:  O(N) / O(N)
      */
         int n = fruits.length;
+        // create a hash table to bind the value and count
         Map<Integer, Integer> cnt = new HashMap<Integer, Integer>();
 
         int left = 0, ans = 0;
@@ -29,6 +30,7 @@ class Solution {
             while (cnt.size() > 2) {
                 cnt.put(fruits[left], cnt.get(fruits[left]) - 1);
                 if (cnt.get(fruits[left]) == 0) {
+                    // remove binding
                     cnt.remove(fruits[left]);
                 }
                 ++left;
