@@ -1,9 +1,8 @@
 package sliding_window3;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
-
-import javax.swing.text.html.HTMLDocument.Iterator;
 
 class Solution {
 
@@ -20,6 +19,7 @@ class Solution {
         *         keep updating the position of ansL and ansR, until requirement is not satisfied.
         * 
         * NOTE:   changes in two hashtable are important
+        *         uncomment the check function to run
         * 
         * TIME/
         * SPACE:  O(C * |t| + |s|) / O(C) where C is the length of the character set
@@ -52,6 +52,7 @@ class Solution {
         return ansL == -1 ? "" : s.substring(ansL, ansR + 1);
     }
 
+    // comment the function cuz the vscode will raise an error
     public boolean check() {
         Iterator iter = countT.entrySet().iterator();
         while (iter.hasNext()) {
@@ -65,4 +66,10 @@ class Solution {
         return true;
     }
 
+    public static void main(String[] args) {
+        String str = "ADOBECODEBANC";
+        String str2 = "ABC";
+        Solution obj = new Solution();
+        System.out.println(obj.minWindow(str, str2));
+    }
 }
