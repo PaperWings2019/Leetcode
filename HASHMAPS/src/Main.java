@@ -16,5 +16,8 @@ public class Main {
         int[] arr2 = {2, 1, 1};
         System.out.println(Arrays.toString(obj.intersection(arr1, arr2)));
         Map<Integer, Integer> map1 = new HashMap<Integer, Integer>();
+        map1.put(1, 2);
+        map1.put(1, 3);
+        System.out.println(map1);
     }
 }

@@ -167,4 +167,38 @@ public class hashmaps {
         }
         return count;
     }
+
+    public boolean canConstruct(String ransomNote, String magazine) {
+        /*
+         * TASK:   find if there are enough chars in magazine that can build the string in ransom note
+         *
+         * METHOD: build a hashmap to record the occurrences of chars in magazine
+         *
+         * NOTE:   None
+         *
+         * TIME/
+         * SPACE:  O(N) / O(N)
+         */
+        if (ransomNote.length() > magazine.length()) {
+            return false;
+        }
+        Character c;
+        Map<Character, Integer> map1 = new HashMap<Character, Integer>();
+        for (int i = 0; i < magazine.length(); i ++) {
+            c = magazine.charAt(i);
+            map1.put(c, map1.getOrDefault(c, 0) + 1);
+        }
+        for (int j = 0; j < ransomNote.length(); j ++) {
+            c = ransomNote.charAt(j);
+            if (map1.containsKey(c)) {
+                map1.put(c, map1.get(c) - 1);
+                if (map1.get(c) < 0) {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        }
+        return true;
+    }
 }
