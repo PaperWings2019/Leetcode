@@ -1,5 +1,7 @@
+import javax.swing.tree.TreeNode;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 public class treeNode {
     int val;
@@ -52,6 +54,63 @@ class tree {
         postorderTraversal(tn.left, done);
         postorderTraversal(tn.right, done);
         done.add(tn.val);
+    }
+
+    public List<Integer> iter_preorderTraversal(TreeNode root) {
+        List<Integer> result = new ArrayList<>();
+        Stack<TreeNode> stk = new Stack<>();
+        if (root != null) stk.push(root);
+        while (!stk.isEmpty()) {
+            TreeNode node = stk.peek();
+            stk.pop();
+            if (node != null) {
+                if (node.right != null) stk.push(node.right);
+                if (node.left != null) stk.push(node.left);
+                stk.push(node);
+                stk.push(null);
+            } else {
+                result.add(stk.pop().val);
+            }
+        }
+        return result;
+    }
+
+    public List<Integer> iter_inorderTraversal(TreeNode root) {
+        List<Integer> result = new ArrayList<>();
+        Stack<TreeNode> stk = new Stack<>();
+        if (root != null) stk.push(root);
+        while (!stk.isEmpty()) {
+            TreeNode node = stk.peek();
+            stk.pop();
+            if (node != null) {
+                if (node.right != null) stk.push(node.right);
+                stk.push(node);
+                stk.push(null);
+                if (node.left != null) stk.push(node.left);
+            } else {
+                result.add(stk.pop().val);
+            }
+        }
+        return result;
+    }
+
+    public List<Integer> iter_postorderTraversal(TreeNode root) {
+        List<Integer> result = new ArrayList<>();
+        Stack<TreeNode> stk = new Stack<>();
+        if (root != null) stk.push(root);
+        while (!stk.isEmpty()) {
+            TreeNode node = stk.peek();
+            stk.pop();
+            if (node != null) {
+                stk.push(node);
+                stk.push(null);
+                if (node.right != null) stk.push(node.right);
+                if (node.left != null) stk.push(node.left);
+            } else {
+                result.add(stk.pop().val);
+            }
+        }
+        return result;
     }
 }
 
