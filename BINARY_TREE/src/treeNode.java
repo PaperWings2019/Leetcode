@@ -443,5 +443,111 @@ class tree {
         Collections.reverse(result);
         return result;
     }
+
+    public TreeNode invertTree(TreeNode root) {
+        /*
+         * TASK:   reverse the left node and right node of each node in a tree
+         *
+         * METHOD: 1. (this one) use recursive method to traverse the tree
+         *         2. use stack to simulate the recursive process
+         *
+         * NOTE:   None
+         *
+         * TIME/
+         * SPACE:  O(2 ^ depth) / O(2 ^ depth)
+         */
+        if (root == null) return null;
+        swap(root);
+        invertTree(root.left);
+        invertTree(root.right);
+        return root;
+    }
+
+    void swap(TreeNode r) {
+        TreeNode t = r.right;
+        r.right = r.left;
+        r.left = t;
+        return;
+    }
+
+    class Node3 {
+        public int val;
+        public List<Node3> children;
+
+        public Node3() {}
+
+        public Node3(int _val) {
+            val = _val;
+        }
+
+        public Node3(int _val, List<Node3> _children) {
+            val = _val;
+            children = _children;
+        }
+    };
+
+    public List<Integer> preorder_N(Node3 root) {
+        /*
+         * TASK:   traverse the N-nary tree with preorder
+         *
+         * METHOD: 1. use recursive method to traverse the tree
+         *         2. (this one) use stack to simulate the recursive process
+         *
+         * NOTE:   None
+         *
+         * TIME/
+         * SPACE:  O(2 ^ depth) / O(2 ^ depth)
+         */
+        Stack<Node3> stk = new Stack<Node3>();
+        List<Integer> result = new ArrayList<Integer>();
+        if (root != null) stk.push(root);
+        while (!stk.isEmpty()) {
+            Node3 node = stk.pop();
+            if (node != null) {
+                for (int i = node.children.size() - 1; i >= 0; i --) {
+                    if (node.children.get(i) != null) {
+                        stk.push(node.children.get(i));
+                    }
+                }
+                stk.push(node);
+                stk.push(null);
+            } else {
+                result.add(stk.pop().val);
+            }
+        }
+        return result;
+    }
+
+    public List<Integer> postorder(Node3 root) {
+        /*
+         * TASK:   traverse the N-nary tree with postorder
+         *
+         * METHOD: 1. use recursive method to traverse the tree
+         *         2. (this one) use stack to simulate the recursive process
+         *
+         * NOTE:   None
+         *
+         * TIME/
+         * SPACE:  O(2 ^ depth) / O(2 ^ depth)
+         */
+        Stack<Node3> stk = new Stack<Node3>();
+        List<Integer> result = new ArrayList<Integer>();
+        if (root != null) stk.push(root);
+        while (!stk.isEmpty()) {
+            Node3 node = stk.pop();
+            if (node != null) {
+                stk.push(node);
+                stk.push(null);
+                for (int i = node.children.size() - 1; i >= 0; i --) {
+                    if (node.children.get(i) != null) {
+                        stk.push(node.children.get(i));
+                    }
+                }
+            } else {
+                result.add(stk.pop().val);
+            }
+        }
+        return result;
+    }
 }
 
