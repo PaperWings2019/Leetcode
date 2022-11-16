@@ -41,6 +41,7 @@ class tree {
         System.out.println(done);
         return done;
     }
+
     public void preorderTraversal(treeNode tn, List<Integer> done) {
         if (tn == null) {
             return;
@@ -49,6 +50,7 @@ class tree {
         preorderTraversal(tn.left, done);
         preorderTraversal(tn.right, done);
     }
+
     public void inorderTraversal(treeNode tn, List<Integer> done) {
         if (tn == null) {
             return;
@@ -57,6 +59,7 @@ class tree {
         done.add(tn.val);
         inorderTraversal(tn.right, done);
     }
+
     public void postorderTraversal(treeNode tn, List<Integer> done) {
         if (tn == null) {
             return;
@@ -142,7 +145,7 @@ class tree {
         }
         while (!q.isEmpty()) {
             int size = q.size();
-            for (int i = 0; i < size; i ++) {
+            for (int i = 0; i < size; i++) {
                 TreeNode node = q.poll();
                 if (node.left != null) q.offer(node.left);
                 if (node.right != null) q.offer(node.right);
@@ -173,7 +176,7 @@ class tree {
         }
         while (!q.isEmpty()) {
             int size = q.size();
-            for (int i = 0; i < size; i ++) {
+            for (int i = 0; i < size; i++) {
                 TreeNode node = q.poll();
                 if (node.left != null) q.offer(node.left);
                 if (node.right != null) q.offer(node.right);
@@ -276,7 +279,7 @@ class tree {
         while (!q.isEmpty()) {
             int size = q.size();
             int max = Integer.MIN_VALUE;
-            for (int i = 0; i < size; i ++) {
+            for (int i = 0; i < size; i++) {
                 TreeNode node = q.poll();
                 if (node.left != null) q.add(node.left);
                 if (node.right != null) q.add(node.right);
@@ -291,7 +294,8 @@ class tree {
         public int val;
         public List<Node2> children;
 
-        public Node2() {}
+        public Node2() {
+        }
 
         public Node2(int _val) {
             val = _val;
@@ -320,9 +324,9 @@ class tree {
         while (!q.isEmpty()) {
             int size = q.size();
             List<Integer> layer = new ArrayList<Integer>();
-            for (int i = 0; i < size; i ++) {
+            for (int i = 0; i < size; i++) {
                 Node2 node = q.poll();
-                for (Node2 child: node.children) {
+                for (Node2 child : node.children) {
                     if (child != null) q.offer(child);
                 }
                 layer.add(node.val);
@@ -349,7 +353,7 @@ class tree {
         while (!q.isEmpty()) {
             int size = q.size();
             double sum = 0;
-            for (int i = 0; i < size; i ++) {
+            for (int i = 0; i < size; i++) {
                 TreeNode node = q.poll();
                 if (node.left != null) q.offer(node.left);
                 if (node.right != null) q.offer(node.right);
@@ -377,7 +381,7 @@ class tree {
         while (!q.isEmpty()) {
             int size = q.size();
             TreeNode node = null;
-            for (int i = 0; i < size; i ++) {
+            for (int i = 0; i < size; i++) {
                 node = q.poll();
                 if (node.left != null) q.add(node.left);
                 if (node.right != null) q.add(node.right);
@@ -474,7 +478,8 @@ class tree {
         public int val;
         public List<Node3> children;
 
-        public Node3() {}
+        public Node3() {
+        }
 
         public Node3(int _val) {
             val = _val;
@@ -484,7 +489,9 @@ class tree {
             val = _val;
             children = _children;
         }
-    };
+    }
+
+    ;
 
     public List<Integer> preorder_N(Node3 root) {
         /*
@@ -504,7 +511,7 @@ class tree {
         while (!stk.isEmpty()) {
             Node3 node = stk.pop();
             if (node != null) {
-                for (int i = node.children.size() - 1; i >= 0; i --) {
+                for (int i = node.children.size() - 1; i >= 0; i--) {
                     if (node.children.get(i) != null) {
                         stk.push(node.children.get(i));
                     }
@@ -538,7 +545,7 @@ class tree {
             if (node != null) {
                 stk.push(node);
                 stk.push(null);
-                for (int i = node.children.size() - 1; i >= 0; i --) {
+                for (int i = node.children.size() - 1; i >= 0; i--) {
                     if (node.children.get(i) != null) {
                         stk.push(node.children.get(i));
                     }
@@ -548,6 +555,107 @@ class tree {
             }
         }
         return result;
+    }
+
+    public boolean isSameTree(TreeNode p, TreeNode q) {
+        /*
+         * TASK:   find out if two trees are the same
+         *
+         * METHOD: 1. (this one) use recursive method to traverse the tree
+         *         2. use stack to simulate the recursive process
+         *
+         * NOTE:   None
+         *
+         * TIME/
+         * SPACE:  O(2 ^ depth) / O(2 ^ depth)
+         */
+        if (p == null && q != null) return false;
+        else if (p != null && q == null) return false;
+        else if (p == null && q == null) return true;
+        else if (p.val != q.val) return false;
+        boolean outside = isSameTree(p.left, q.left);
+        boolean inside = isSameTree(p.right, q.right);
+        return outside && inside;
+    }
+
+    public boolean isSymmetric(TreeNode root) {
+        /*
+         * TASK:   find out if the tree is symmetric
+         *
+         * METHOD: 1. use recursive method to traverse the tree
+         *         2. (this one) use stack to simulate the recursive process
+         *
+         * NOTE:   Do consider all situations with the two nodes
+         *
+         * TIME/
+         * SPACE:  O(2 ^ depth) / O(2 ^ depth)
+         */
+        Stack<TreeNode> stk = new Stack<TreeNode>();
+        if (root == null) return true;
+        stk.push(root.right);
+        stk.push(root.left);
+        while (!stk.isEmpty()) {
+            TreeNode left_node = stk.pop();
+            TreeNode right_node = stk.pop();
+            if (left_node == null && right_node != null) return false;
+            else if (left_node != null && right_node == null) return false;
+            else if (left_node == null && right_node == null) continue;
+            else if (left_node.val != right_node.val) return false;
+            // outside
+            stk.push(right_node.right);
+            stk.push(left_node.left);
+            // inside
+            stk.push(right_node.left);
+            stk.push(left_node.right);
+        }
+        return true;
+    }
+
+    public boolean isSubtree(TreeNode root, TreeNode subRoot) {
+        /*
+         * TASK:   find out if the tree has a subtree that has the same structure as subRoot
+         *
+         * METHOD: use 'compare' to check if two trees are the same and in the main function
+         *         traverse the whole tree using stack
+         *
+         * NOTE:   Do consider all situations with the two nodes
+         *
+         * TIME/
+         * SPACE:  O(2 ^ depth) / O(2 ^ depth)
+         */
+
+        if (root == null && subRoot == null) return true;
+        if (compare(root, subRoot)) return true;
+        Stack<TreeNode> stk = new Stack<TreeNode>();
+        stk.push(root.left);
+        stk.push(root.right);
+        while (!stk.isEmpty()) {
+            TreeNode r = stk.pop();
+            TreeNode l = stk.pop();
+            if (compare(r, subRoot)) {
+                return true;
+            }
+            if (compare(l, subRoot)) {
+                return true;
+            }
+            if (r != null) {
+                stk.push(r.left);
+                stk.push(r.right);
+            }
+            if (l != null) {
+                stk.push(l.left);
+                stk.push(l.right);
+            }
+        }
+        return false;
+    }
+
+    public boolean compare(TreeNode p, TreeNode q) {
+        if (p == null && q != null) return false;
+        else if (p != null && q == null) return false;
+        else if (p == null && q == null) return true;
+        else if (p.val != q.val) return false;
+        return (compare(p.left, q.left) && compare(p.right, q.right));
     }
 }
 
