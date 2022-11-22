@@ -107,3 +107,114 @@ def closestNodes(self, root: Optional[TreeNode], queries: List[int]) -> List[Lis
                 res[i][0] = traversed[mid]
                 left = mid + 1
     return res
+
+
+def buildTree(self, preorder: List[int], inorder: List[int]) -> Optional[TreeNode]:
+    #    /*
+    #     * TASK:   build a tree from preorder and inorder traversed list
+    #     *
+    #     * METHOD: remember that the first node in the preorder is the 'root' node, and the right of that node
+    #               in the inorder list is the right child of root, the left of that node in the inorder list
+    #               is the left child of root
+    #
+    #     * NOTE:   first construct left child, then construct right child
+    #     *
+    #     * TIME/
+    #     * SPACE:  O(N) / O(N)
+    #     */
+    def helper(in_left: int, in_right: int) -> TreeNode:
+        if in_left > in_right:
+            return None
+        val = preorder.pop(0)
+        root = TreeNode(val)
+        index = ind_map[val]
+        root.left = helper(in_left, index - 1)
+        root.right = helper(index + 1, in_right)
+        return root
+
+    ind_map = {val: ind for ind, val in enumerate(inorder)}
+    return helper(0, len(inorder) - 1)
+
+
+def buildTree2(self, inorder: List[int], postorder: List[int]) -> Optional[TreeNode]:
+    #    /*
+    #     * TASK:   build a tree from postorder and inorder traversed list
+    #     *
+    #     * METHOD: remember that the final node in the postorder is the 'root' node, and the right of that node
+    #               in the inorder list is the right child of root, the left of that node in the inorder list
+    #               is the left child of root
+    #
+    #     * NOTE:   first construct right child, then construct left child
+    #     *
+    #     * TIME/
+    #     * SPACE:  O(N) / O(N)
+    #     */
+    def helper(in_left: int, in_right: int) -> TreeNode:
+        if in_left > in_right:
+            return None
+        # print(postorder)
+        val = postorder.pop()
+        root = TreeNode(val)
+        index = ind_map[val]
+        root.right = helper(index + 1, in_right)
+        root.left = helper(in_left, index - 1)
+        return root
+
+    ind_map = {val: ind for ind, val in enumerate(inorder)}
+    return helper(0, len(inorder) - 1)
+
+
+def mergeTrees(root1: Optional[TreeNode], root2: Optional[TreeNode]) -> Optional[TreeNode]:
+    #    /*
+    #     * TASK:   merge two trees on the same position (add the numbers on the same position)
+    #     *
+    #     * METHOD: see code
+    #
+    #     * NOTE:   when one of the node is null return the other
+    #     *
+    #     * TIME/
+    #     * SPACE:  O(N) / O(logN)
+    #     */
+    if root1 is None and root2 is None:
+        return
+    left = right = 0
+    if root2 is not None:
+        right = root2.val
+    else:
+        return root1
+    if root1 is not None:
+        left = root1.val
+        root1.val = left + right
+    else:
+        return root2
+    root1.left = mergeTrees(root1.left, root2.left)
+    root1.right = mergeTrees(root1.right, root2.right)
+    return root1
+
+
+def constructMaximumBinaryTree(nums: List[int]) -> Optional[TreeNode]:
+    #    /*
+    #     * TASK:   given an array, find the largest number as root, right of the number as right child,
+    #                 left of the number as the left child to construct a tree
+    #     *
+    #     * METHOD: see code
+    #
+    #     * NOTE:   to operate on the original array, use left and right to delimit the range
+    #     *
+    #     * TIME/
+    #     * SPACE:  O(N) / O(logN)
+    #     */
+    return traverse2(nums, 0, len(nums) - 1)
+
+
+def traverse2(nums: List[int], left: int, right: int) -> TreeNode:
+    if left > right:
+        return None
+    max_index = left
+    for i in range(left, right + 1):
+        if nums[i] > nums[max_index]:
+            max_index = i
+    node = TreeNode(nums[max_index])
+    node.left = traverse2(nums, left, max_index - 1)
+    node.right = traverse2(nums, max_index + 1, right)
+    return node
