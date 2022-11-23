@@ -208,6 +208,17 @@ def constructMaximumBinaryTree(nums: List[int]) -> Optional[TreeNode]:
 
 
 def traverse2(nums: List[int], left: int, right: int) -> TreeNode:
+    #    /*
+    #     * TASK:   judge if it is a binary search tree (all the nodes on the left is less than current val
+    #               all the nodes on the right is greater than current val, and children subtrees are also BST)
+    #     *
+    #     * METHOD: use inorder traverse, judge if the traversed array is monotonically increasing
+    #
+    #     * NOTE:   None
+    #     *
+    #     * TIME/
+    #     * SPACE:  O(N) / O(logN)
+    #     */
     if left > right:
         return None
     max_index = left
@@ -218,3 +229,45 @@ def traverse2(nums: List[int], left: int, right: int) -> TreeNode:
     node.left = traverse2(nums, left, max_index - 1)
     node.right = traverse2(nums, max_index + 1, right)
     return node
+
+
+def isValidBST(self, root: Optional[TreeNode]) -> bool:
+    stack = list()
+    res = list()
+    if root is not None:
+        stack.append(root)
+    while len(stack) != 0:
+        node = stack.pop()
+        if node is not None:
+            if node.right is not None: stack.append(node.right)
+            stack.append(node)
+            stack.append(None)
+            if node.left is not None: stack.append(node.left)
+        else:
+            res.append(stack.pop().val)
+    n = len(res)
+    for i in range(n):
+        if i > 0 and res[i - 1] >= res[i]:
+            return False
+    return True
+
+
+def searchBST(self, root: Optional[TreeNode], val: int) -> Optional[TreeNode]:
+    #    /*
+    #     * TASK:   find the subtree whose root is val in a BST
+    #     *
+    #     * METHOD: use characteristics of BST to find the answer
+    #
+    #     * NOTE:   None
+    #     *
+    #     * TIME/
+    #     * SPACE:  O(logN) / O(logN)
+    #     */
+    if root is None:
+        return None
+    if val == root.val:
+        return root
+    elif val < root.val:
+        return self.searchBST(root.left, val)
+    elif val > root.val:
+        return self.searchBST(root.right, val)
