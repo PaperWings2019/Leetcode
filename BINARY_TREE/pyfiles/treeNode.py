@@ -271,3 +271,73 @@ def searchBST(self, root: Optional[TreeNode], val: int) -> Optional[TreeNode]:
         return self.searchBST(root.left, val)
     elif val > root.val:
         return self.searchBST(root.right, val)
+
+
+def minDiffInBST(self, root: Optional[TreeNode]) -> int:
+    #    /*
+    #     * TASK:   find the minimum difference between any node in a BST
+    #     *
+    #     * METHOD: use inorder traverse and find the minimum diff in the array
+    #
+    #     * NOTE:   None
+    #     *
+    #     * TIME/
+    #     * SPACE:  O(N) / O(logN)
+    #     */
+    stack = list()
+    res = list()
+    if root != None: stack.append(root)
+    while len(stack) != 0:
+        node = stack.pop()
+        if node != None:
+            if node.right != None: stack.append(node.right)
+            stack.append(node)
+            stack.append(None)
+            if node.left != None: stack.append(node.left)
+        else:
+            res.append(stack.pop().val)
+    print(res)
+    n = len(res)
+    m = inf
+    for i in range(n):
+        if i > 0:
+            m = min(m, res[i] - res[i - 1])
+    return m
+
+
+def findMode(self, root: Optional[TreeNode]) -> List[int]:
+    #    /*
+    #     * TASK:   find the mode(s) in a BST
+    #     *
+    #     * METHOD: use inorder traverse and find the mode(s) in the array
+    #
+    #     * NOTE:   None
+    #     *
+    #     * TIME/
+    #     * SPACE:  O(N) / O(logN)
+    #     */
+    stack = list()
+    res = list()
+    if root is not None: stack.append(root)
+    while len(stack) != 0:
+        node = stack.pop()
+        if node != None:
+            if node.right != None: stack.append(node.right)
+            stack.append(node)
+            stack.append(None)
+            if node.left != None: stack.append(node.left)
+        else:
+            res.append(stack.pop().val)
+    n = len(res)
+    freq = {}
+    for i in range(n):
+        if res[i] in freq.keys():
+            freq[res[i]] += 1
+        else:
+            freq[res[i]] = 0
+    m = max(list(freq.values()))
+    ans = list()
+    for num, freq in freq.items():
+        if freq == m:
+            ans.append(num)
+    return ans
