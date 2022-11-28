@@ -321,11 +321,11 @@ def findMode(self, root: Optional[TreeNode]) -> List[int]:
     if root is not None: stack.append(root)
     while len(stack) != 0:
         node = stack.pop()
-        if node != None:
-            if node.right != None: stack.append(node.right)
+        if node is not None:
+            if node.right is not None: stack.append(node.right)
             stack.append(node)
             stack.append(None)
-            if node.left != None: stack.append(node.left)
+            if node.left is not None: stack.append(node.left)
         else:
             res.append(stack.pop().val)
     n = len(res)
@@ -341,3 +341,66 @@ def findMode(self, root: Optional[TreeNode]) -> List[int]:
         if freq == m:
             ans.append(num)
     return ans
+
+
+def insertIntoBST(self, root: Optional[TreeNode], val: int) -> Optional[TreeNode]:
+    #    /*
+    #     * TASK:   insert a node in a BST tree
+    #     *
+    #     * METHOD: search the BST until encounter null node, place the node there
+    #
+    #     * NOTE:   None
+    #     *
+    #     * TIME/
+    #     * SPACE:  O(logN) / O(logN)
+    #     */
+    if root is None: return TreeNode(val)
+    cur = parent = root
+    while cur is not None:
+        parent = cur
+        if val < cur.val:
+            cur = cur.left
+        else:
+            cur = cur.right
+    if val < parent.val:
+        parent.left = TreeNode(val)
+    else:
+        parent.right = TreeNode(val)
+    return root
+
+
+def deleteNode(self, root: Optional[TreeNode], key: int) -> Optional[TreeNode]:
+    #    /*
+    #     * TASK:   delete a node in a BST tree
+    #     *
+    #     * METHOD: traverse the BST while noticing five circumstances: 1. if current node is null, return null
+    #               2. left and right are both null, return null (remove this node) 3. left is null, return right
+    #               4. right is null, return left 5. left and right both are not null, first find the left most node
+    #               in the right subtree of root, and assign the left subtree of root to that node's left child. the
+    #               reason is that this left most node is the node whose value is least larger than root, so the left
+    #               subtree can be moved to be the node's left child safely. after the assignment, only return
+    #               root.right
+    #
+    #     * NOTE:   None
+    #     *
+    #     * TIME/
+    #     * SPACE:  O(logN) / O(logN)
+    #     */
+    if root is None: return None
+    if root.val == key:
+        if root.left is None and root.right is None:
+            return None
+        elif root.left is None:
+            return root.right
+        elif root.right is None:
+            return root.left
+        else:
+            cur = root.right
+            while cur.left is not None:
+                cur = cur.left
+            cur.left = root.left
+            root = root.right
+            return root
+    if key < root.val: root.left = self.deleteNode(root.left, key)
+    if key > root.val: root.right = self.deleteNode(root.right, key)
+    return root
