@@ -404,3 +404,80 @@ def deleteNode(self, root: Optional[TreeNode], key: int) -> Optional[TreeNode]:
     if key < root.val: root.left = self.deleteNode(root.left, key)
     if key > root.val: root.right = self.deleteNode(root.right, key)
     return root
+
+
+def convertBST(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
+    #    /*
+    #     * TASK:   see link: https://leetcode.cn/problems/convert-bst-to-greater-tree/submissions/385930604/
+    #     *
+    #     * METHOD: traverse the BST tree with the order - right - mid - left, while maintaining a 'sum' at the same
+    #               time
+    #
+    #     * NOTE:   None
+    #     *
+    #     * TIME/
+    #     * SPACE:  O(N) / O(logN)
+    #     */
+    sum1 = 0
+    stack = list()
+    if root is not None: stack.append(root)
+    while len(stack) != 0:
+        node = stack.pop()
+        if node is not None:
+            if node.left is not None: stack.append(node.left)
+            stack.append(node)
+            stack.append(None)
+            if node.right is not None: stack.append(node.right)
+        else:
+            r = stack.pop()
+            sum1 += r.val
+            r.val = sum1
+    return root
+
+
+def sortedArrayToBST(self, nums: List[int]) -> Optional[TreeNode]:
+    #    /*
+    #     * TASK:   build a BST from a sorted array, with balance
+    #     *
+    #     * METHOD: always get the mid of the array as the root, and right of mid as right child, left of the mid as
+    #               the left child
+    #
+    #     * NOTE:   None
+    #     *
+    #     * TIME/
+    #     * SPACE:  O(N) / O(logN)
+    #     */
+    return self.traverse1(nums, 0, len(nums) - 1)
+
+
+def traverse1(self, nums, low, high) -> Optional[TreeNode]:
+    if low <= high:
+        mid = (low + high) // 2
+        root = TreeNode(nums[mid])
+        root.left = self.traverse1(nums, low, mid - 1)
+        root.right = self.traverse1(nums, mid + 1, high)
+        return root
+    else:
+        return None
+
+
+def trimBST(self, root: Optional[TreeNode], low: int, high: int) -> Optional[TreeNode]:
+    #    /*
+    #     * TASK:   delete nodes that are not in the range in a BST tree
+    #     *
+    #     * METHOD: traverse the BST tree, if one node is outside the range, two situations to consider: 1. the node is
+    #               less than the range, then all the nodes on the left subtree is also outside the range, return the
+    #               right subtree; 2. the node is higher than the range, then all the nodes on the right subtree is also
+    #               outside range, return left subtree
+    #
+    #     * NOTE:   None
+    #     *
+    #     * TIME/
+    #     * SPACE:  O(N) / O(logN)
+    #     */
+    if root is None: return None
+    if root.val < low: return self.trimBST(root.right, low, high)
+    if root.val > high: return self.trimBST(root.left, low, high)
+    root.left = self.trimBST(root.left, low, high)
+    root.right = self.trimBST(root.right, low, high)
+    return root
