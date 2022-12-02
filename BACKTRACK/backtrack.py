@@ -49,6 +49,7 @@ def combinationSum3(self, k: int, n: int) -> List[List[int]]:
 
 
 def backtrack2(self, k: int, n: int, res: List, ans: List, start: int):
+
     t = sum(res)
     if k == 0 and t == n:
         ans.append(res[:])
@@ -58,3 +59,107 @@ def backtrack2(self, k: int, n: int, res: List, ans: List, start: int):
         res.append(i)
         self.backtrack2(k - 1, n, res, ans, i + 1)
         res.pop()
+
+
+def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
+    #    /*
+    #     * TASK:   choose group of numbers in candidates such that the sum is target (all numbers are distinct, no
+    #               repetitive groups, each number can be chosen infinite times), return all possible groups
+    #     *
+    #     * METHOD: use the backtrack method to search for available combinations, use a 'start' index to prevent
+    #               choosing previous elements
+    #
+    #     * NOTE:   1. append res[:] instead of res, because 'res' here is address not content
+    #               2. cutting branch: if current sum + i is larger than n, just break. since i grows larger afterwards
+    #     *
+    #     * TIME/
+    #     * SPACE:  O(C(M, k) * k) / O(M) where M is the size of the collection
+    #     */
+    def backtrack(candidates: list, res: list, ans: list, start: int):
+        t = sum(res)
+        if t == target:
+            ans.append(res[:])
+            return
+        for i in range(start, len(candidates)):
+            num = candidates[i]
+            if t + num > target:
+                break
+            res.append(num)
+            backtrack(candidates, res, ans, start)
+            res.pop()
+            start += 1
+    candidates.sort()
+    ans = []
+    backtrack(candidates, [], ans, 0)
+    return ans
+
+
+def letterCombinations(self, digits: str) -> List[str]:
+    if not digits: return []
+    m = {"2": ['a', 'b', 'c'], "3": ['d', 'e', 'f'], "4": ["g", "h", "i"], "5": ["j", "k", "l"],
+         "6": ["m", "n", "o"],
+         "7": ["p", "q", "r", "s"], "8": ["t", "u", "v"], "9": ["w", "x", "y", "z"]}
+    digits_arr = list(digits)
+    ans = []
+
+    def backtrack(rest_num: list, res: str, ans: list):
+        if len(rest_num) == 0:
+            ans.append("".join(res))
+            return
+        for ch in m[rest_num[0]]:
+            # print(rest_num)
+            res.append(ch)
+            t = rest_num.pop(0)
+            backtrack(rest_num, res, ans)
+            rest_num.insert(0, t)
+            res.pop()
+            # print(rest_num)
+
+    backtrack(digits_arr, [], ans)
+    return ans
+
+
+def partition(self, s: str) -> List[List[str]]:
+    n = len(s)
+    def backtrack(startindex, path, res):
+        if startindex >= n:
+            res.append(path[:])
+            return
+        for i in range(startindex, n):
+            if isPalin(startindex, i):
+                path.append(s[startindex:i+1])
+            else:
+                continue
+            backtrack(i + 1, path, res)
+            path.pop()
+    def isPalin(left, right):
+        while left <= right:
+            if s[left] != s[right]:
+                return False
+            left += 1
+            right -= 1
+        return True
+    res = []
+    backtrack(0, [], res)
+    return res
+
+
+def combinationSum2(self, candidates: List[int], target: int) -> List[List[int]]:
+    def backtrack(candidates, res, ans):
+        t = sum(res)
+        if t == target:
+            ans.append(res[:])
+            return
+        for i in range(len(candidates)):
+            if i > 0 and candidates[i] == candidates[i - 1]:
+                continue
+            num = candidates[i]
+            if num + t > target:
+                break
+            res.append(num)
+            backtrack(candidates[i+1:], res, ans)
+            res.pop()
+    candidates.sort()
+    ans = []
+    backtrack(candidates, [], ans)
+    return ans
