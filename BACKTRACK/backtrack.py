@@ -163,3 +163,40 @@ def combinationSum2(self, candidates: List[int], target: int) -> List[List[int]]
     ans = []
     backtrack(candidates, [], ans)
     return ans
+
+
+def subsets(self, nums: List[int]) -> List[List[int]]:
+    n = len(nums)
+    def backtrack(startindex, res, cur):
+        res.append(cur[:])
+        for i in range(startindex, n):
+            # backtrack(i + 1, res, cur)
+            cur.append(nums[i])
+            backtrack(i + 1, res, cur)
+            cur.pop()
+    res = []
+    backtrack(0, res, [])
+    return res
+
+
+def restoreIpAddresses(self, s: str) -> List[str]:
+    def backtrack(restdot, startindex, res, cur):
+        if restdot == 0 and startindex == n:
+            res.append(cur[0:-1])
+            return
+        if n - startindex > 3 * restdot:
+            return
+        for i in range(startindex + 1, n + 1):
+            t = s[startindex:i]
+            if i >= startindex + 4:
+                breakß
+            if int(t) == 0:
+                backtrack(restdot - 1, i, res, cur + t + '.')
+                break
+            if int(t) > 255:
+                break
+            backtrack(restdot - 1, i, res, cur + t + '.')
+    n = len(s)
+    res = []
+    backtrack(4, 0, res, '')
+    return res
