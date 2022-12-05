@@ -200,3 +200,41 @@ def restoreIpAddresses(self, s: str) -> List[str]:
     res = []
     backtrack(4, 0, res, '')
     return res
+
+
+def findSubsequences(self, nums: List[int]) -> List[List[int]]:
+    n = len(nums)
+    def backtrack(res, cur, startindex):
+        used_num = {}
+        if len(cur) >= 2:
+            res.append(cur[:])
+        for i in range(startindex, n):
+            if  (len(cur) >= 1 and nums[i] < cur[-1]) or nums[i] in used_num.keys():
+                continue
+            used_num[nums[i]] = True
+            cur.append(nums[i])
+            backtrack(res, cur, i + 1)
+            cur.pop()
+    res = []
+    backtrack(res, [], 0)
+    return res
+
+
+def subsetsWithDup(self, nums: List[int]) -> List[List[int]]:
+    n = len(nums)
+    nums.sort()
+    def backtrack(res, cur, startindex):
+        # if startindex == n:
+        #     res.append(cur[:])
+        #     return
+        res.append(cur[:])
+        for i in range(startindex, n):
+            # backtrack(res, cur, i + 1)
+            if i > startindex and nums[i] == nums[i - 1]:
+                continue
+            cur.append(nums[i])
+            backtrack(res, cur, i + 1)
+            cur.pop()
+    res = []
+    backtrack(res, [], 0)
+    return res
