@@ -238,3 +238,48 @@ def subsetsWithDup(self, nums: List[int]) -> List[List[int]]:
     res = []
     backtrack(res, [], 0)
     return res
+
+
+def permute(self, nums: List[int]) -> List[List[int]]:
+    n = len(nums)
+    # def swap(nums, left, right):
+    #     t = nums[left]
+    #     nums[left] = nums[right]
+    #     nums[right] = t
+    def backtrack(res, path, used):
+        if len(path) == n:
+            res.append(path[:])
+            return
+        for i in range(n):
+            if nums[i] not in used.keys():
+                path.append(nums[i])
+                used[nums[i]] = 1
+                backtrack(res, path, used)
+                used.pop(nums[i])
+                path.pop()
+
+    res = []
+    backtrack(res, [], {})
+    return res
+
+
+def permuteUnique(self, nums: List[int]) -> List[List[int]]:
+    nums.sort()
+    n = len(nums)
+    def backtrack(res, path, used2):
+        if len(path) == n:
+            res.append(path[:])
+            return
+        for i in range(n):
+            if i > 0 and nums[i] == nums[i - 1] and not used2[i-1]:
+                continue
+            else:
+                if not used2[i]:
+                    used2[i] = True
+                    path.append(nums[i])
+                    backtrack(res, path, used2)
+                    path.pop()
+                    used2[i] = False
+    res = []
+    backtrack(res, [], [False] * n)
+    return res
