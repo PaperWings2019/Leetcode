@@ -283,3 +283,45 @@ def permuteUnique(self, nums: List[int]) -> List[List[int]]:
     res = []
     backtrack(res, [], [False] * n)
     return res
+
+
+def solveNQueens(self, n: int) -> List[List[str]]:
+    board = [['.' for i in range(n)] for j in range(n)]
+    def backtrack(res, curBoard, row):
+        if row == n:
+            # print(curBoard)
+            ans = []
+            for rows in curBoard:
+                s = ''
+                for ch in rows:
+                    s += ch
+                ans.append(s)
+            res.append(ans)
+            return
+        for i in range(n):
+            if isValid(row, i, curBoard):
+                curBoard[row][i] = 'Q'
+                backtrack(res, curBoard, row + 1)
+                curBoard[row][i] = '.'
+    def isValid(row, col, curBoard):
+        for i in range(n):
+            if i != row and curBoard[i][col] == 'Q':
+                return False
+        i = row - 1
+        j = col - 1
+        while i >= 0 and j >= 0:
+            if curBoard[i][j] == 'Q':
+                return False
+            i -= 1
+            j -= 1
+        i = row - 1
+        j = col + 1
+        while i >= 0 and j < n:
+            if curBoard[i][j] == 'Q':
+                return False
+            i -= 1
+            j += 1
+        return True
+    res = []
+    backtrack(res, board, 0)
+    return res
