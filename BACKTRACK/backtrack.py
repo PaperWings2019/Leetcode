@@ -325,3 +325,44 @@ def solveNQueens(self, n: int) -> List[List[str]]:
     res = []
     backtrack(res, board, 0)
     return res
+
+
+def solveSudoku(self, board: List[List[str]]) -> None:
+    """
+    Do not return anything, modify board in-place instead.
+    """
+    empty = []
+    for i in range(9):
+        for j in range(9):
+            if board[i][j] == '.':
+                empty.append((i, j))
+    n = len(empty)
+    def backtrack(pos, path, flag):
+        if pos == n:
+            flag[0] = True
+            return
+        row = empty[pos][0]
+        col = empty[pos][1]
+        for i in range(1, 10):
+            t = str(i)
+            if isValid(row, col, t, path):
+                path[row][col] = t
+                backtrack(pos + 1, path, flag)
+                if flag[0]:
+                    return
+                path[row][col] = '.'
+    def isValid(row, col, num, board):
+        for j in range(9):
+            if board[row][j] == num:
+                return False
+        for i in range(9):
+            if board[i][col] == num:
+                return False
+        start_row = row // 3 * 3
+        start_col = col // 3 * 3
+        for i in range(start_row, start_row + 3):
+            for j in range(start_col, start_col + 3):
+                if board[i][j] == num:
+                    return False
+        return True
+    backtrack(0, board, [False])
