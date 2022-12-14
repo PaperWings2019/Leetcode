@@ -366,3 +366,12 @@ def solveSudoku(self, board: List[List[str]]) -> None:
                     return False
         return True
     backtrack(0, board, [False])
+
+
+def maxProfit(self, prices: List[int]) -> int:
+    n = len(prices)
+    sum = 0
+    for i in range(n):
+        if i > 0 and prices[i] > prices[i - 1]:
+            sum += prices[i] - prices[i - 1]
+    return sum
