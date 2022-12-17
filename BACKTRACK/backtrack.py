@@ -375,3 +375,26 @@ def maxProfit(self, prices: List[int]) -> int:
         if i > 0 and prices[i] > prices[i - 1]:
             sum += prices[i] - prices[i - 1]
     return sum
+
+
+def canJump(self, nums: List[int]) -> bool:
+    n = len(nums)
+    max_pos = nums[0]
+    step = 0
+    while step <= max_pos and max_pos < n:
+        # print(max_pos)
+        if step + nums[step] > max_pos:
+            max_pos = step + nums[step]
+        step += 1
+    return max_pos >= n - 1
+
+
+def largestSumAfterKNegations(self, A: List[int], K: int) -> int:
+    A = sorted(A, key=abs, reverse=True)  # 将A按绝对值从大到小排列
+    for i in range(len(A)):
+        if K > 0 and A[i] < 0:
+            A[i] *= -1
+            K -= 1
+    if K > 0:
+        A[-1] *= (-1) ** K  # 取A最后一个数只需要写-1
+    return sum(A)
