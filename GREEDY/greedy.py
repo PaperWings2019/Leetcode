@@ -40,3 +40,24 @@ def candy(self, ratings: List[int]) -> int:
         if i < n - 1 and ratings[i] > ratings[i + 1]:
             candyVec[i] = max(candyVec[i], candyVec[i + 1] + 1)
     return sum(candyVec)
+
+
+def reconstructQueue(self, people: List[List[int]]) -> List[List[int]]:
+    n = len(people)
+    for i in range(n):
+        for j in range(n):
+            if j > 0 and people[j][0] > people[j - 1][0]:
+                t = people[j]
+                people[j] = people[j - 1]
+                people[j - 1] = t
+            elif j > 0 and people[j][0] == people[j - 1][0]:
+                if people[j][1] < people[j - 1][1]:
+                    t = people[j]
+                    people[j] = people[j - 1]
+                    people[j - 1] = t
+    print(people)
+    queue = []
+    for i in range(len(people)):
+        queue.insert(people[i][1], people[i])
+        # print(queue)
+    return queue
