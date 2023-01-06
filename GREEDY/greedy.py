@@ -74,3 +74,15 @@ def findMinArrowShots(self, points: List[List[int]]) -> int:
         else:
             points[i][1] = min(points[i][1], points[i - 1][1])
     return result
+
+
+def eraseOverlapIntervals(self, intervals: List[List[int]]) -> int:
+    n = len(intervals)
+    if n == 0: return 0
+    result = 0
+    intervals.sort(key=lambda x: x[1])
+    for i in range(1, n):
+        if intervals[i][0] < intervals[i - 1][1]:
+            intervals[i][1] = intervals[i - 1][1]
+            result += 1
+    return result
