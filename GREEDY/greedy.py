@@ -86,3 +86,39 @@ def eraseOverlapIntervals(self, intervals: List[List[int]]) -> int:
             intervals[i][1] = intervals[i - 1][1]
             result += 1
     return result
+
+
+def partitionLabels(self, s: str) -> List[int]:
+    dic = {}
+    n = len(s)
+    for i in range(n):
+        dic[ord(s[i]) - ord('a')] = i
+    result = []
+    left = 0
+    right = 0
+    for i in range(n):
+        right = max(right, dic[ord(s[i]) - ord('a')])
+        if i == right:
+            result.append(right - left + 1)
+            left = right + 1
+    return result
+
+
+def merge(self, intervals: List[List[int]]) -> List[List[int]]:
+    result = []
+    n = len(intervals)
+    if n == 0: return result
+    intervals.sort(key = lambda x: x[0])
+    start = intervals[0][0]
+    end = intervals[0][1]
+    for i in range(1, n):
+        if intervals[i][0] <= intervals[i - 1][1]:
+            end = max(intervals[i][1], intervals[i - 1][1])
+            intervals[i][1] = end
+        else:
+            result.append([start, end])
+            start = intervals[i][0]
+            end = intervals[i][1]
+    else:
+        result.append([start, end])
+        return result
