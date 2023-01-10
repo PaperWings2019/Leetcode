@@ -122,3 +122,25 @@ def merge(self, intervals: List[List[int]]) -> List[List[int]]:
     else:
         result.append([start, end])
         return result
+
+
+def monotoneIncreasingDigits(self, n: int) -> int:
+    a = list(str(n))
+    for i in range(len(a)-1,0,-1):
+        if int(a[i]) < int(a[i-1]):
+            a[i-1] = str(int(a[i-1]) - 1)
+            a[i:] = '9' * (len(a) - i)
+        print(a)
+    return int("".join(a))
+
+
+def maxProfit(self, prices: List[int], fee: int) -> int:
+    n = len(prices)
+    result = 0
+    minPrice = prices[0]
+    for i in range(1, n):
+        if prices[i] < minPrice: minPrice = prices[i]
+        elif prices[i] > minPrice + fee:
+            result += prices[i] - minPrice - fee
+            minPrice = prices[i] - fee
+    return result
