@@ -144,3 +144,28 @@ def maxProfit(self, prices: List[int], fee: int) -> int:
             result += prices[i] - minPrice - fee
             minPrice = prices[i] - fee
     return result
+
+def minCameraCover(self, root: Optional[TreeNode]) -> int:
+    result = 0
+
+    def traversal(root):
+        nonlocal result
+        if root is None:
+            # 2 represents monitored
+            return 2
+        left = traversal(root.left)
+        right = traversal(root.right)
+
+        if left == 2 and right == 2:
+            # 0 means not monitored
+            return 0
+        if left == 0 or right == 0:
+            result += 1
+            # 1 means camera installed
+            return 1
+        if left == 1 or right == 1:
+            return 2
+
+    if traversal(root) == 0:
+        result += 1
+    return result
