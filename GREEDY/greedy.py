@@ -169,3 +169,18 @@ def minCameraCover(self, root: Optional[TreeNode]) -> int:
     if traversal(root) == 0:
         result += 1
     return result
+
+
+def minCostClimbingStairs(self, cost: List[int]) -> int:
+    # F(i) is the minimum cost to reach i-th ladder
+    # F(i) = min(F(i - 1) + cost[i - 1], F(i - 2) + cost[i - 2])
+    # F(0) = F(1) = 0
+    n = len(cost)
+    if n <= 1: return 0
+    dp = [-1] * (n + 1)
+    dp[0] = 0
+    dp[1] = 0
+    for i in range(2, n + 1):
+        dp[i] = min(dp[i - 1] + cost[i - 1], dp[i - 2] + cost[i - 2])
+    return dp[n]
+
