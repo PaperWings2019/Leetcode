@@ -184,3 +184,18 @@ def minCostClimbingStairs(self, cost: List[int]) -> int:
         dp[i] = min(dp[i - 1] + cost[i - 1], dp[i - 2] + cost[i - 2])
     return dp[n]
 
+
+def uniquePaths(self, m: int, n: int) -> int:
+    # dp[i][j] means total ways to get position (i, j)
+    # dp[0][0] = 1, dp[1][0] = 1, dp[0][1] = 1
+    # dp[i][j] = dp[i - 1][j] + dp[i][j - 1]
+    dp = [[1 for i in range(n)] for j in range(m)]
+    print(dp)
+    if m <= 1 or n <= 1:
+        return 1
+    for i in range(1, m):
+        for j in range(1, n):
+            dp[i][j] = dp[i - 1][j] + dp[i][j - 1]
+            pass
+    return dp[m - 1][n - 1]
+
