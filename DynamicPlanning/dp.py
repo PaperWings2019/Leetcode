@@ -32,3 +32,15 @@ def integerBreak(self, n: int) -> int:
         for j in range(1, i // 2 + 1):
             dp[i] = max(dp[i], max(j * (i - j), j * dp[i - j]))
     return dp[n]
+
+
+def numTrees(self, n: int) -> int:
+    # dp[i] means when there are i nodes to constitute a binary search tree, how many ways are there
+    # dp[i] += dp[j - 1] + dp[i - j]
+    # dp[0] = 1
+    dp = [0 for i in range(n + 1)]
+    dp[0] = 1
+    for i in range(1, n + 1):
+        for j in range(1, i + 1):
+            dp[i] += dp[j - 1] * dp[i - j]
+    return dp[n]
