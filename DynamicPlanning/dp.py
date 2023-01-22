@@ -44,3 +44,14 @@ def numTrees(self, n: int) -> int:
         for j in range(1, i + 1):
             dp[i] += dp[j - 1] * dp[i - j]
     return dp[n]
+
+
+def canPartition(self, nums: List[int]) -> bool:
+    dp = [0 for i in range(10001)]
+    target = sum(nums)
+    if target % 2 == 1: return False
+    target //= 2
+    for i in range(len(nums)):
+        for j in range(target, nums[i] - 1, -1):
+            dp[j] = max(dp[j], dp[j - nums[i]] + nums[i])
+    return dp[target] == target
