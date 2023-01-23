@@ -55,3 +55,13 @@ def canPartition(self, nums: List[int]) -> bool:
         for j in range(target, nums[i] - 1, -1):
             dp[j] = max(dp[j], dp[j - nums[i]] + nums[i])
     return dp[target] == target
+
+
+def lastStoneWeightII(self, stones: List[int]) -> int:
+    totalWeight = sum(stones)
+    target = totalWeight // 2
+    dp = [0] * (target + 1)
+    for i in range(len(stones)):
+        for j in range(target, stones[i] - 1, -1):
+            dp[j] = max(dp[j], dp[j - stones[i]] + stones[i])
+    return totalWeight - dp[target] - dp[target]
